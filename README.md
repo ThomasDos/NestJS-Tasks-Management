@@ -1,73 +1,41 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# Task Management System with NestJS, PostgreSQL, and GraphQL
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Welcome to the Task Management System project! This repository showcases a comprehensive solution for efficient task management, leveraging the power of modern technologies. Built with NestJS, PostgreSQL, and GraphQL, this project aims to streamline task organization, tracking, and collaboration.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Features
 
-## Description
+- **GraphQL API:** Utilize a robust GraphQL API to interact with the task management system. GraphQL's flexible querying enables tailored requests for specific data, optimizing performance and minimizing over-fetching.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+- **Database Persistence:** The project employs PostgreSQL as the database of choice, ensuring data integrity, reliability, and scalability. Store and manage task-related information efficiently.
 
-## Installation
+- **NestJS Framework:** Built on the NestJS framework, the project benefits from its modular structure, dependency injection, and powerful middleware. This architecture promotes maintainability and extensibility.
 
-```bash
-$ yarn install
-```
+- **Efficient Task Management:** Organize tasks effectively, assign priorities, set due dates, and track progress. This system provides a clear overview of tasks, enhancing productivity and collaboration.
 
-## Running the app
+- **User Authentication and Authorization:** Implement secure user authentication and authorization mechanisms. Ensure that only authorized users can access and modify task data.
 
-```bash
-# development
-$ yarn run start
+## Getting Started
 
-# watch mode
-$ yarn run start:dev
+To get started with the Task Management System:
 
-# production mode
-$ yarn run start:prod
-```
+1. **Clone the Repository:** Begin by cloning this repository to your local machine using `git clone https://github.com/yourusername/your-repo.git`.
 
-## Test
+2. **Install Dependencies:** Navigate to the project directory and install the required dependencies using `npm install` or `yarn install`.
 
-```bash
-# unit tests
-$ yarn run test
+3. **Configure Database:** Set up a PostgreSQL database and configure the connection details in the project's configuration files.
 
-# e2e tests
-$ yarn run test:e2e
+4. **Run the Application:** Launch the application using `npm run start` or `yarn start`. The application will be accessible at `http://localhost:3000`.
 
-# test coverage
-$ yarn run test:cov
-```
+5. **Explore the API:** Open a web browser or API testing tool and access the GraphQL endpoint to interact with the task management system.
 
-## Support
+## Contributions and Feedback
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+Contributions to this project are welcome! If you have ideas for enhancements, bug fixes, or new features, feel free to submit pull requests. Your feedback helps make this task management system even better.
 
 ## License
 
-Nest is [MIT licensed](LICENSE).
+This project is licensed under the [MIT License](LICENSE), granting you the freedom to use, modify, and distribute the code.
+
+---
+
+Ready to take control of your tasks? Dive into the Task Management System with NestJS, PostgreSQL, and GraphQL. Feel free to connect with the developer on [LinkedIn](https://www.linkedin.com/in/thomasdosanjos/) or explore other projects on [GitHub](https://github.com/ThomasDos).
