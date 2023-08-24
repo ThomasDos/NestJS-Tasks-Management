@@ -14,4 +14,7 @@ export class Task {
 
   @Column({ default: TaskStatus.OPEN })
   status: TaskStatus;
+
+  @Column()
+  picture_url: string;
 }
