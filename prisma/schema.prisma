@@ -13,10 +13,22 @@ model Task {
   description String 
   status      TaskStatus @default(OPEN)
   picture_url String 
+  created_at DateTime @default(now())
+  updated_at DateTime?
+
 }
 
 enum TaskStatus {
   OPEN 
   IN_PROGRESS
   DONE
+}
+
+
+model User {
+  id String @id @default(uuid())
+  username String @unique
+  password String
+  created_at DateTime @default(now())
+  updated_at DateTime?
 }

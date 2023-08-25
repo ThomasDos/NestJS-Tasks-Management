@@ -3,11 +3,11 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
+import { TaskStatus } from '@prisma/client';
 import { v2 as cloudinary } from 'cloudinary';
 import { PrismaService } from 'nestjs-prisma';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { GetTasksFilterDto } from './dto/get-tasks-filter.dto';
-import { TaskStatus } from './task-status.enum';
 import formatBufferImageToDataUri from './utils/format-buffer-image-to-data-uri';
 @Injectable()
 export class TasksService {
