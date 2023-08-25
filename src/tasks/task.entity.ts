@@ -1,20 +1,20 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-import { TaskStatus } from './task-status.enum';
+// import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+// import { TaskStatus } from './task-status.enum';
 
-@Entity()
-export class Task {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+// @Entity()
+// export class Task {
+//   @PrimaryGeneratedColumn('uuid')
+//   id: string;
 
-  @Column()
-  title: string;
+//   @Column()
+//   title: string;
 
-  @Column()
-  description: string;
+//   @Column()
+//   description: string;
 
-  @Column({ default: TaskStatus.OPEN })
-  status: TaskStatus;
+//   @Column({ default: TaskStatus.OPEN })
+//   status: TaskStatus;
 
-  @Column()
-  picture_url: string;
-}
+//   @Column()
+//   picture_url: string;
+// }

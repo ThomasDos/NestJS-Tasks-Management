@@ -3,20 +3,15 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
 import { v2 as cloudinary } from 'cloudinary';
-import { ILike, Repository } from 'typeorm';
+import { PrismaService } from 'nestjs-prisma';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { GetTasksFilterDto } from './dto/get-tasks-filter.dto';
 import { TaskStatus } from './task-status.enum';
-import { Task } from './task.entity';
 import formatBufferImageToDataUri from './utils/format-buffer-image-to-data-uri';
 @Injectable()
 export class TasksService {
-  constructor(
-    @InjectRepository(Task)
-    private tasksRepository: Repository<Task>,
-  ) {}
+  constructor(private prisma: PrismaService) {}
 
   /**
    * Retrieve all tasks.
@@ -24,7 +19,7 @@ export class TasksService {
    * @returns List of all tasks in the database.
    */
   async getAllTasks() {
-    return await this.tasksRepository.find();
+    return await this.prisma.task.findMany();
   }
 
   /**
@@ -33,16 +28,20 @@ export class TasksService {
    * @param filterDto Filters for querying tasks.
    * @returns List of tasks that match the applied filters.
    */
-  async getTasksWithFilters(filterDto: GetTasksFilterDto): Promise<Task[]> {
+  async getTasksWithFilters(filterDto: GetTasksFilterDto) {
     const { search, status } = filterDto;
-    return await this.tasksRepository.find({
-      where: [
-        {
-          status,
-        },
-        { description: ILike(`%${search}%`) },
-        { title: ILike(`%${search}%`) },
-      ],
+    return await this.prisma.task.findMany({
+      where: {
+        OR: [
+          {
+            status,
+          },
+          { description: { contains: search } },
+          {
+            title: { contains: search },
+          },
+        ],
+      },
     });
   }
 
@@ -58,14 +57,15 @@ export class TasksService {
     file: Express.Multer.File,
   ) {
     const image = await this.uploadFile(file);
-    const task = this.tasksRepository.create({
-      description,
-      title,
-      picture_url: image.url,
+    const task = await this.prisma.task.create({
+      data: {
+        description,
+        title,
+        picture_url: image.url,
+      },
     });
-    const newTask = await this.tasksRepository.save(task);
 
-    return newTask;
+    return task;
   }
 
   /**
@@ -75,8 +75,8 @@ export class TasksService {
    * @returns The task's information.
    * @throws NotFoundException if the task with the specified ID is not found.
    */
-  async getTaskById(id: string): Promise<Task> {
-    const task = await this.tasksRepository.findOne({ where: { id } });
+  async getTaskById(id: string) {
+    const task = await this.prisma.task.findFirst({ where: { id } });
     if (!task) {
       throw new NotFoundException();
     }
@@ -91,7 +91,7 @@ export class TasksService {
    */
   async deleteTaskById(id: string) {
     const task = await this.getTaskById(id);
-    this.tasksRepository.remove(task);
+    this.prisma.task.delete({ where: { id: task.id } });
   }
 
   /**
@@ -105,7 +105,7 @@ export class TasksService {
   async updateTaskStatus(id: string, status: TaskStatus) {
     const task = await this.getTaskById(id);
     task.status = status;
-    await this.tasksRepository.save(task);
+    await this.prisma.task.update({ data: { status }, where: { id: task.id } });
     return task;
   }
 
