@@ -17,9 +17,22 @@ export class TasksService {
     @InjectRepository(Task)
     private tasksRepository: Repository<Task>,
   ) {}
+
+  /**
+   * Retrieve all tasks.
+   *
+   * @returns List of all tasks in the database.
+   */
   async getAllTasks() {
     return await this.tasksRepository.find();
   }
+
+  /**
+   * Retrieve tasks based on filters.
+   *
+   * @param filterDto Filters for querying tasks.
+   * @returns List of tasks that match the applied filters.
+   */
   async getTasksWithFilters(filterDto: GetTasksFilterDto): Promise<Task[]> {
     const { search, status } = filterDto;
     return await this.tasksRepository.find({
@@ -33,6 +46,13 @@ export class TasksService {
     });
   }
 
+  /**
+   * Create a new task.
+   *
+   * @param createTaskDto The data for creating the task.
+   * @param file The uploaded file (if applicable).
+   * @returns The created task's information.
+   */
   async createTask(
     { description, title }: CreateTaskDto,
     file: Express.Multer.File,
@@ -47,6 +67,14 @@ export class TasksService {
 
     return newTask;
   }
+
+  /**
+   * Retrieve a task by its ID.
+   *
+   * @param id The unique identifier of the task.
+   * @returns The task's information.
+   * @throws NotFoundException if the task with the specified ID is not found.
+   */
   async getTaskById(id: string): Promise<Task> {
     const task = await this.tasksRepository.findOne({ where: { id } });
     if (!task) {
@@ -55,10 +83,25 @@ export class TasksService {
     return task;
   }
 
+  /**
+   * Delete a task by its ID.
+   *
+   * @param id The unique identifier of the task to be deleted.
+   * @throws NotFoundException if the task with the specified ID is not found.
+   */
   async deleteTaskById(id: string) {
     const task = await this.getTaskById(id);
     this.tasksRepository.remove(task);
   }
+
+  /**
+   * Update the status of a task.
+   *
+   * @param id The unique identifier of the task.
+   * @param status The new status to be assigned to the task.
+   * @returns The updated task's information, including the newly assigned status.
+   * @throws NotFoundException if the task with the specified ID is not found.
+   */
   async updateTaskStatus(id: string, status: TaskStatus) {
     const task = await this.getTaskById(id);
     task.status = status;
@@ -66,6 +109,13 @@ export class TasksService {
     return task;
   }
 
+  /**
+   * Upload a file to Cloudinary and return the uploaded image's information.
+   *
+   * @param file The file to be uploaded.
+   * @returns The uploaded image's information.
+   * @throws BadRequestException if there's an error during the upload process.
+   */
   async uploadFile(file: Express.Multer.File) {
     const dataURI = formatBufferImageToDataUri(file);
 
