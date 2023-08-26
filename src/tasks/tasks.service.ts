@@ -1,17 +1,22 @@
 import {
   BadRequestException,
   Injectable,
+  Logger,
   NotFoundException,
 } from '@nestjs/common';
 import { TaskStatus, User } from '@prisma/client';
-import { v2 as cloudinary } from 'cloudinary';
 import { PrismaService } from 'nestjs-prisma';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { GetTasksFilterDto } from './dto/get-tasks-filter.dto';
+import { CloudinaryService } from './services/cloudinary.service';
 import formatBufferImageToDataUri from './utils/format-buffer-image-to-data-uri';
 @Injectable()
 export class TasksService {
-  constructor(private prisma: PrismaService) {}
+  private logger = new Logger('TasksService', { timestamp: true });
+  constructor(
+    private prisma: PrismaService,
+    private cloudinaryService: CloudinaryService,
+  ) {}
 
   /**
    * Retrieve all tasks.
@@ -128,19 +133,8 @@ export class TasksService {
   async uploadFile(file: Express.Multer.File) {
     const dataURI = formatBufferImageToDataUri(file);
 
-    cloudinary.config({
-      cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-      api_key: process.env.CLOUDINARY_API_KEY,
-      api_secret: process.env.CLOUDINARY_API_SECRET,
-    });
-
     try {
-      const image = await cloudinary.uploader.upload(dataURI, {
-        resource_type: 'auto',
-        transformation: [{ width: 300, height: 300, crop: 'limit' }],
-      });
-
-      return image;
+      return await this.cloudinaryService.uploadImage(dataURI);
     } catch (error) {
       throw new BadRequestException(error);
     }
