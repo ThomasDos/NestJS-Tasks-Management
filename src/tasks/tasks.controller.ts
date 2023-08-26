@@ -32,11 +32,11 @@ export class TasksController {
    * @returns List of tasks based on the applied filters, or all tasks if no filters are provided.
    */
   @Get()
-  getTasks(@Query() filterDto: GetTasksFilterDto) {
+  getTasks(@Query() filterDto: GetTasksFilterDto, @GetUser() user: User) {
     if (Object.keys(filterDto).length) {
-      return this.tasksService.getTasksWithFilters(filterDto);
+      return this.tasksService.getTasksWithFilters(filterDto, user);
     }
-    return this.tasksService.getAllTasks();
+    return this.tasksService.getAllTasks(user);
   }
 
   /**
@@ -63,8 +63,8 @@ export class TasksController {
    * @returns The task's information.
    */
   @Get('/:id')
-  getTaskById(@Param('id') id: string) {
-    return this.tasksService.getTaskById(id);
+  getTaskById(@Param('id') id: string, @GetUser() user: User) {
+    return this.tasksService.getTaskById(id, user);
   }
 
   /**
@@ -74,8 +74,8 @@ export class TasksController {
    * @returns A confirmation message indicating the successful deletion.
    */
   @Delete('/:id')
-  deleteTaskById(@Param('id') id: string) {
-    return this.tasksService.deleteTaskById(id);
+  deleteTaskById(@Param('id') id: string, @GetUser() user: User) {
+    return this.tasksService.deleteTaskById(id, user);
   }
 
   /** Update the status of a task.
@@ -88,7 +88,8 @@ export class TasksController {
   updateTaskStatus(
     @Param('id') id: string,
     @Body() { status }: UpdateTaskStatusDto,
+    @GetUser() user: User,
   ) {
-    return this.tasksService.updateTaskStatus(id, status);
+    return this.tasksService.updateTaskStatus(id, status, user);
   }
 }

@@ -18,8 +18,8 @@ export class TasksService {
    *
    * @returns List of all tasks in the database.
    */
-  async getAllTasks() {
-    return await this.prisma.task.findMany();
+  async getAllTasks(user: User) {
+    return await this.prisma.task.findMany({ where: { userId: user.id } });
   }
 
   /**
@@ -28,17 +28,22 @@ export class TasksService {
    * @param filterDto Filters for querying tasks.
    * @returns List of tasks that match the applied filters.
    */
-  async getTasksWithFilters(filterDto: GetTasksFilterDto) {
+  async getTasksWithFilters(filterDto: GetTasksFilterDto, user: User) {
     const { search, status } = filterDto;
     return await this.prisma.task.findMany({
       where: {
-        OR: [
+        AND: [
+          { userId: user.id },
           {
-            status,
-          },
-          { description: { contains: search } },
-          {
-            title: { contains: search },
+            OR: [
+              {
+                status,
+              },
+              { description: { contains: search } },
+              {
+                title: { contains: search },
+              },
+            ],
           },
         ],
       },
@@ -77,8 +82,10 @@ export class TasksService {
    * @returns The task's information.
    * @throws NotFoundException if the task with the specified ID is not found.
    */
-  async getTaskById(id: string) {
-    const task = await this.prisma.task.findFirst({ where: { id } });
+  async getTaskById(id: string, user: User) {
+    const task = await this.prisma.task.findFirst({
+      where: { id, userId: user.id },
+    });
     if (!task) {
       throw new NotFoundException();
     }
@@ -91,8 +98,8 @@ export class TasksService {
    * @param id The unique identifier of the task to be deleted.
    * @throws NotFoundException if the task with the specified ID is not found.
    */
-  async deleteTaskById(id: string) {
-    const task = await this.getTaskById(id);
+  async deleteTaskById(id: string, user: User) {
+    const task = await this.getTaskById(id, user);
     this.prisma.task.delete({ where: { id: task.id } });
   }
 
@@ -104,8 +111,8 @@ export class TasksService {
    * @returns The updated task's information, including the newly assigned status.
    * @throws NotFoundException if the task with the specified ID is not found.
    */
-  async updateTaskStatus(id: string, status: TaskStatus) {
-    const task = await this.getTaskById(id);
+  async updateTaskStatus(id: string, status: TaskStatus, user: User) {
+    const task = await this.getTaskById(id, user);
     task.status = status;
     await this.prisma.task.update({ data: { status }, where: { id: task.id } });
     return task;
