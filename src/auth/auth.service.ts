@@ -24,7 +24,6 @@ export class AuthService {
         data: { username, password: hashedPassword, tasks: { create: [] } },
         include: { tasks: true },
       });
-      delete user.password;
       return user;
     } catch (error) {
       if (error.code === 'P2002') {
@@ -36,6 +35,7 @@ export class AuthService {
 
   async signIn({ username, password }: AuthCredentialsDto) {
     const user = await this.prisma.user.findFirst({ where: { username } });
+
     if (!user) {
       throw new NotFoundException();
     }

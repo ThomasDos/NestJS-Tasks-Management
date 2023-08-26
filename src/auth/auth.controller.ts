@@ -1,10 +1,18 @@
-import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Post,
+  UseGuards,
+  UseInterceptors,
+} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { User } from '@prisma/client';
 import { AuthService } from './auth.service';
 import { AuthCredentialsDto } from './dto/auth-credentials.dto';
+import { RemovePasswordInterceptor } from './interceptor/remove-password.interceptor';
 
 @Controller('auth')
+@UseInterceptors(new RemovePasswordInterceptor())
 export class AuthController {
   constructor(private authService: AuthService) {}
 

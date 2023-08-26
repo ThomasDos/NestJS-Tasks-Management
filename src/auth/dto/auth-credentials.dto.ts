@@ -1,21 +1,16 @@
-import { createZodDto } from 'nestjs-zod';
-import { z } from 'zod';
+import { IsString, Matches, MaxLength, MinLength } from 'class-validator';
 
-const authCredentialsSchema = z
-  .object({
-    username: z
-      .string()
-      .min(4, 'Your username must be at least 4 characters')
-      .max(20, 'Your username must be maximum 20 characters'),
-    password: z
-      .string()
-      .min(8, 'Your password must be at least 8 characters')
-      .max(20, 'Your password must be maximum 20 characters')
-      .regex(
-        /((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/,
-        'Your password is not valid',
-      ),
+export class AuthCredentialsDto {
+  @IsString()
+  @MinLength(4)
+  @MaxLength(20)
+  username: string;
+
+  @IsString()
+  @MinLength(8)
+  @MaxLength(20)
+  @Matches(/((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {
+    message: 'Your password is invalid',
   })
-  .required();
-
-export class AuthCredentialsDto extends createZodDto(authCredentialsSchema) {}
+  password: string;
+}
