@@ -3,7 +3,7 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { TaskStatus } from '@prisma/client';
+import { TaskStatus, User } from '@prisma/client';
 import { v2 as cloudinary } from 'cloudinary';
 import { PrismaService } from 'nestjs-prisma';
 import { CreateTaskDto } from './dto/create-task.dto';
@@ -55,6 +55,7 @@ export class TasksService {
   async createTask(
     { description, title }: CreateTaskDto,
     file: Express.Multer.File,
+    user: User,
   ) {
     const image = await this.uploadFile(file);
     const task = await this.prisma.task.create({
@@ -62,6 +63,7 @@ export class TasksService {
         description,
         title,
         picture_url: image.url,
+        user: { connect: { id: user.id } },
       },
     });
 

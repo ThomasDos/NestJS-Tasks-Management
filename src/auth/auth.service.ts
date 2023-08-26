@@ -21,7 +21,8 @@ export class AuthService {
     const hashedPassword = await bcrypt.hash(password, salt);
     try {
       const user = await this.prisma.user.create({
-        data: { username, password: hashedPassword },
+        data: { username, password: hashedPassword, tasks: { create: [] } },
+        include: { tasks: true },
       });
       delete user.password;
       return user;

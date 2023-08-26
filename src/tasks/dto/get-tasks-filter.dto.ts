@@ -1,12 +1,10 @@
 import { TaskStatus } from '@prisma/client';
-import { IsEnum, IsOptional, IsString } from 'class-validator';
+import { createZodDto } from 'nestjs-zod';
+import { z } from 'zod';
 
-export class GetTasksFilterDto {
-  @IsOptional()
-  @IsEnum(TaskStatus)
-  status?: TaskStatus;
+const getTaskFilterSchema = z.object({
+  status: z.nativeEnum(TaskStatus).optional(),
+  search: z.string().optional(),
+});
 
-  @IsOptional()
-  @IsString()
-  search?: string;
-}
+export class GetTasksFilterDto extends createZodDto(getTaskFilterSchema) {}

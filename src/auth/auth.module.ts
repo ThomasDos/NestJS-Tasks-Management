@@ -9,13 +9,17 @@ import { JwtStrategy } from './jwt.strategy';
   imports: [
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.register({
-      secret: 'this is my secret',
+      secret: process.env.HASH_SECRET_JWT,
       signOptions: {
         expiresIn: 3600,
       },
     }),
   ],
-  providers: [AuthService, JwtStrategy],
+  providers: [
+    AuthService,
+    JwtStrategy,
+    // { provide: APP_INTERCEPTOR, useClass: ZodSerializerInterceptor },
+  ],
   controllers: [AuthController],
   exports: [JwtStrategy, PassportModule],
 })
