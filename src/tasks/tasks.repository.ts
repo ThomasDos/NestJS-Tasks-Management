@@ -1,22 +1,12 @@
-import {
-  BadRequestException,
-  Injectable,
-  Logger,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { TaskStatus, User } from '@prisma/client';
 import { PrismaService } from 'nestjs-prisma';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { GetTasksFilterDto } from './dto/get-tasks-filter.dto';
-import { CloudinaryService } from './services/cloudinary.service';
-import formatBufferImageToDataUri from './utils/format-buffer-image-to-data-uri';
+
 @Injectable()
-export class TasksService {
-  private logger = new Logger('TasksService', { timestamp: true });
-  constructor(
-    private prisma: PrismaService,
-    private cloudinaryService: CloudinaryService,
-  ) {}
+export class TasksRepository {
+  constructor(private prisma: PrismaService) {}
 
   /**
    * Retrieve all tasks.
@@ -64,21 +54,19 @@ export class TasksService {
    */
   async createTask(
     { description, title }: CreateTaskDto,
-    file: Express.Multer.File,
+    image: any,
     user: User,
   ) {
-    try {
-      const image = await this.uploadFile(file);
-      const task = await this.prisma.task.create({
-        data: {
-          description,
-          title,
-          picture_url: image.url,
-          user: { connect: { id: user.id } },
-        },
-      });
-      return task;
-    } catch (error) {}
+    const task = await this.prisma.task.create({
+      data: {
+        description,
+        title,
+        picture_url: image.url,
+        user: { connect: { id: user.id } },
+      },
+    });
+
+    return task;
   }
 
   /**
@@ -122,21 +110,5 @@ export class TasksService {
     task.status = status;
     await this.prisma.task.update({ data: { status }, where: { id: task.id } });
     return task;
-  }
-
-  /**
-   * Upload a file to Cloudinary and return the uploaded image's information.
-   *
-   * @param file The file to be uploaded.
-   * @returns The uploaded image's information.
-   * @throws BadRequestException if there's an error during the upload process.
-   */
-  async uploadFile(file: Express.Multer.File) {
-    const dataURI = formatBufferImageToDataUri(file);
-    try {
-      return await this.cloudinaryService.uploadImage(dataURI);
-    } catch (error) {
-      throw new BadRequestException(error);
-    }
   }
 }

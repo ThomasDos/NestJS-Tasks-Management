@@ -20,11 +20,7 @@ import { JwtStrategy } from './jwt.strategy';
       }),
     }),
   ],
-  providers: [
-    AuthService,
-    JwtStrategy,
-    // { provide: APP_INTERCEPTOR, useClass: ZodSerializerInterceptor },
-  ],
+  providers: [AuthService, JwtStrategy],
   controllers: [AuthController],
   exports: [JwtStrategy, PassportModule],
 })

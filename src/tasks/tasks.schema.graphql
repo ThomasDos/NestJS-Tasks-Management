@@ -1,0 +1,32 @@
+type Query {
+  task(taskId: String): Task
+  tasks: [Task]
+}
+
+scalar Date
+
+type Task {
+  id: String!
+  user: User!
+  userId: String!
+  title: String!
+  description: String!
+  status: TaskStatus!
+  picture_url: String
+  created_at: Date!
+  updated_at: Date
+}
+
+enum TaskStatus {
+  OPEN
+  IN_PROGRESS
+  DONE
+}
+type User {
+  id: String!
+  username: String!
+  password: String!
+  created_at: Date!
+  updated_at: Date
+  tasks: [Task]!
+}

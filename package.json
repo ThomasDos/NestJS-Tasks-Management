@@ -20,13 +20,17 @@
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "git": "git add . && git-cz && git push",
     "db:push:dev": "dotenv -e .env.dev prisma db push",
-    "db:push:production": "dotenv -e .env.production prisma db push"
+    "db:push:production": "dotenv -e .env.production prisma db push",
+    "graphql:generate": "ts-node ./graphql/generate-type.ts"
   },
   "dependencies": {
+    "@apollo/server": "^4.9.2",
     "@hapi/joi": "^17.1.1",
+    "@nestjs/apollo": "^12.0.7",
     "@nestjs/common": "^10.0.0",
     "@nestjs/config": "^3.0.0",
     "@nestjs/core": "^10.0.0",
+    "@nestjs/graphql": "^12.0.8",
     "@nestjs/jwt": "^10.1.0",
     "@nestjs/passport": "^10.0.1",
     "@nestjs/platform-express": "^10.0.0",
@@ -37,6 +41,8 @@
     "class-validator": "^0.14.0",
     "cloudinary": "^1.40.0",
     "git-cz": "^4.9.0",
+    "graphql": "^16.8.0",
+    "graphql-scalars": "^1.22.2",
     "multer": "^1.4.5-lts.1",
     "nestjs-prisma": "^0.22.0",
     "nestjs-zod": "^3.0.0",
@@ -46,6 +52,7 @@
     "prisma": "^5.2.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.1",
+    "ts-morph": "^19.0.0",
     "zod": "^3.22.2"
   },
   "devDependencies": {
@@ -82,7 +89,7 @@
       "ts"
     ],
     "rootDir": "src",
-    "testRegex": ".*\\.spec\\.ts$",
+    "testRegex": ".*\\.test\\.ts$",
     "transform": {
       "^.+\\.(t|j)s$": "ts-jest"
     },
@@ -90,6 +97,11 @@
       "**/*.(t|j)s"
     ],
     "coverageDirectory": "../coverage",
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "moduleNameMapper": {
+      "^/(.*)$": "<rootDir>/src/$1",
+      "^auth/(.*)$": "<rootDir>/src/auth/$1",
+      "^tasks/(.*)$": "<rootDir>/src/tasks/$1"
+    }
   }
 }
