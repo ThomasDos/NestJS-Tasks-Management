@@ -6,15 +6,21 @@ import {
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 import { JwtService } from '@nestjs/jwt';
 import { User } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 import { PrismaService } from 'nestjs-prisma';
 import { AuthCredentialsDto } from './dto/auth-credentials.dto';
+import { AuthEvent } from './event/create-user.event';
 import { JwtPayload } from './jwt-payload.interface';
 @Injectable()
 export class AuthService {
-  constructor(private prisma: PrismaService, private jwtService: JwtService) {}
+  constructor(
+    private prisma: PrismaService,
+    private jwtService: JwtService,
+    private eventEmitter: EventEmitter2,
+  ) {}
 
   async signUp({ username, password }: AuthCredentialsDto): Promise<User> {
     const salt = await bcrypt.genSalt();
@@ -24,6 +30,12 @@ export class AuthService {
         data: { username, password: hashedPassword, tasks: { create: [] } },
         include: { tasks: true },
       });
+
+      const authEvent = new AuthEvent();
+      authEvent.username = user.username;
+      authEvent.id = user.id;
+      this.eventEmitter.emit('user.registered', authEvent);
+
       return user;
     } catch (error) {
       if (error.code === 'P2002') {

@@ -4,6 +4,7 @@ import { AuthModule } from '@auth/auth.module';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TasksModule } from '@tasks/tasks.module';
 import { PrismaModule } from 'nestjs-prisma';
@@ -16,6 +17,7 @@ import { join } from 'path';
       isGlobal: true,
       validationSchema: configValidationSchema,
     }),
+    EventEmitterModule.forRoot(),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       typePaths: ['./**/*.graphql'],
