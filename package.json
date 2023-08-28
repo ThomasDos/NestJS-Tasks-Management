@@ -44,6 +44,7 @@
     "git-cz": "^4.9.0",
     "graphql": "^16.8.0",
     "graphql-scalars": "^1.22.2",
+    "helmet": "^7.0.0",
     "multer": "^1.4.5-lts.1",
     "nestjs-prisma": "^0.22.0",
     "nestjs-zod": "^3.0.0",
