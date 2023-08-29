@@ -98,6 +98,15 @@ export class TasksService {
     return task;
   }
 
+  async getTasksByUser(user: User) {
+    return await this.prisma.user.findFirst({
+      where: { id: user.id },
+      select: {
+        tasks: true,
+      },
+    });
+  }
+
   /**
    * Delete a task by its ID.
    *

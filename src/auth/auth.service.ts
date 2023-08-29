@@ -13,7 +13,7 @@ import * as bcrypt from 'bcrypt';
 import { PrismaService } from 'nestjs-prisma';
 import { AuthCredentialsDto } from './dto/auth-credentials.dto';
 import { AuthEvent } from './event/create-user.event';
-import { JwtPayload } from './jwt-payload.interface';
+import { JwtPayload } from './jwt/jwt-payload.interface';
 @Injectable()
 export class AuthService {
   constructor(

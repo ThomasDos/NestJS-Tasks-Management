@@ -6,7 +6,7 @@ type Query {
 scalar Date
 
 type Task {
-  id: String!
+  id: ID!
   user: User!
   userId: String!
   title: String!
@@ -21,12 +21,4 @@ enum TaskStatus {
   OPEN
   IN_PROGRESS
   DONE
-}
-type User {
-  id: String!
-  username: String!
-  password: String!
-  created_at: Date!
-  updated_at: Date
-  tasks: [Task]!
 }

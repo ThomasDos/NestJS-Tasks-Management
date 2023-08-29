@@ -3,8 +3,9 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { AuthController } from './auth.controller';
+import { AuthResolver } from './auth.resolver';
 import { AuthService } from './auth.service';
-import { JwtStrategy } from './jwt.strategy';
+import { JwtStrategy } from './jwt/jwt.strategy';
 import { CreateUserListener } from './listener/create-user.listener';
 
 @Module({
@@ -21,7 +22,7 @@ import { CreateUserListener } from './listener/create-user.listener';
       }),
     }),
   ],
-  providers: [AuthService, JwtStrategy, CreateUserListener],
+  providers: [AuthService, JwtStrategy, CreateUserListener, AuthResolver],
   controllers: [AuthController],
   exports: [JwtStrategy, PassportModule],
 })

@@ -1,3 +1,4 @@
+import { GetUser } from '@/auth/decorator/get-user.decorator';
 import {
   Body,
   Controller,
@@ -15,7 +16,6 @@ import {
 import { AuthGuard } from '@nestjs/passport';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { User } from '@prisma/client';
-import { GetUser } from 'src/auth/get-user.decorator';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { GetTasksFilterDto } from './dto/get-tasks-filter.dto';
 import { UpdateTaskStatusDto } from './dto/update-task-status.dto';
@@ -57,6 +57,11 @@ export class TasksController {
     @GetUser() user: User,
   ) {
     return this.tasksService.createTask(createTaskDto, file, user);
+  }
+
+  @Get('/user')
+  getTasksByUser(@GetUser() user: User) {
+    return this.tasksService.getTasksByUser(user);
   }
 
   /**

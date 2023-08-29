@@ -21,7 +21,8 @@
     "git": "git add . && git-cz && git push",
     "db:push:dev": "dotenv -e .env.dev prisma db push",
     "db:push:production": "dotenv -e .env.production prisma db push",
-    "graphql:generate": "ts-node ./graphql/generate-type.ts"
+    "graphql:generate": "ts-node ./graphql/generate-type.ts",
+    "prisma:migrate:dev": "dotenv -e .env.dev prisma migrate dev"
   },
   "dependencies": {
     "@apollo/server": "^4.9.2",
@@ -35,6 +36,7 @@
     "@nestjs/jwt": "^10.1.0",
     "@nestjs/passport": "^10.0.1",
     "@nestjs/platform-express": "^10.0.0",
+    "@nestjs/swagger": "^7.1.10",
     "@prisma/client": "^5.2.0",
     "@types/passport-jwt": "^3.0.9",
     "bcrypt": "^5.1.1",
@@ -55,6 +57,7 @@
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.1",
     "ts-morph": "^19.0.0",
+    "uuid": "^9.0.0",
     "zod": "^3.22.2"
   },
   "devDependencies": {
@@ -105,5 +108,8 @@
       "^auth/(.*)$": "<rootDir>/src/auth/$1",
       "^tasks/(.*)$": "<rootDir>/src/tasks/$1"
     }
+  },
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
   }
 }
